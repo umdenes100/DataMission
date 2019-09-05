@@ -1,0 +1,49 @@
+//Data Mission Code
+int outPin = 6;
+int delayTime = 1000;//amount of time in milliseconds to send each signal
+
+void setup() {
+  pinMode(outPin, OUTPUT);    // sets the output pin
+}
+
+void loop() {
+  writeKey();
+  writeMessage();
+}
+
+//This function sends a key of 8 zeros followed by a 1. This key indicates the start of the 7 bit ascii number
+void writeKey(){
+  //Send 8 ZEROS
+  for(int i=0;i<8;i++){
+    digitalWrite(outPin,LOW);
+    delay(delayTime);
+  }
+  //Send a ONE
+  digitalWrite(outPin,HIGH);
+  delay(delayTime);
+}
+
+//Sends Random Message
+void writeMessage(){
+  //Send a ONE
+  digitalWrite(outPin, HIGH);
+  delay(delayTime);
+  //Send a ZERO
+  digitalWrite(outPin, LOW);
+  delay(delayTime);
+  //Send a ONE
+  digitalWrite(outPin, HIGH);
+  delay(delayTime);
+  //Send a ZERO
+  digitalWrite(outPin, LOW);
+  delay(delayTime);
+  //Send a ONE
+  digitalWrite(outPin, HIGH);
+  delay(delayTime);
+  //Send a ZERO
+  digitalWrite(outPin, LOW);
+  delay(delayTime);
+  //Send a ONE
+  digitalWrite(outPin, HIGH);
+  delay(delayTime);
+}
