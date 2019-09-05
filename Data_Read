@@ -1,0 +1,47 @@
+int inPin = 7;    // pushbutton connected to digital pin 7
+int delayTime = 1000;
+int val = 2;      // variable to store the read value
+
+//Store the contents of the last 8 values
+int eightVals_Ago = 2;
+int sevenVals_Ago = 2;
+int sixVals_Ago = 2;
+int fiveVals_Ago = 2;
+int fourVals_Ago = 2;
+int threeVals_Ago = 2;
+int twoVals_Ago = 2;
+int oneVal_Ago = 2;
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(inPin, INPUT);    // sets the digital pin 7 as input
+}
+
+void loop() {
+  eightVals_Ago = sevenVals_Ago;
+  sevenVals_Ago = sixVals_Ago;
+  sixVals_Ago = fiveVals_Ago;
+  fiveVals_Ago = fourVals_Ago;
+  fourVals_Ago = threeVals_Ago;
+  threeVals_Ago = twoVals_Ago;
+  twoVals_Ago = oneVal_Ago;
+  oneVal_Ago = val;
+  val = digitalRead(inPin);   // read the input pin
+  Serial.print("Reading Value ");
+  Serial.println(val);  // sets the LED to the button's value
+  delay(delayTime);
+  if(eightVals_Ago == 0 && sevenVals_Ago == 0 && sixVals_Ago == 0 && fiveVals_Ago == 0 && fourVals_Ago == 0 && threeVals_Ago == 0 && twoVals_Ago == 0 && oneVal_Ago == 0 && val == 1){
+    Serial.println("Key Recieved");
+    Serial.print("Message is ");
+    for(int i=0;i<7;i++){
+      val = digitalRead(inPin);
+      if(i==6){
+        Serial.println(val);
+      }
+      else{
+        Serial.print(val);
+      }
+      delay(delayTime);
+    }
+  }
+}
