@@ -1,14 +1,30 @@
 //Data Mission Code
 int outPin = 7;
 int delayTime = 125;//amount of time in milliseconds to send each signal
+char message[] = "LTF>UTF";
 
 void setup() {
   pinMode(outPin, OUTPUT);    // sets the output pin
 }
 
 void loop() {
-  writeKey();
-  writeMessage();
+  //Convert Message to Bits
+  for(int j=0;j<sizeof(message)-1;j++){
+    writeKey();
+    for(int i=6;i>=0;i--){
+      byte a = bitRead(message[j],i);
+      if(a==1){
+      //Send a ONE
+        digitalWrite(outPin, HIGH);
+        delay(delayTime);
+      }
+      else{
+        //Send a ZERO
+        digitalWrite(outPin, LOW);
+        delay(delayTime);
+      }
+    }
+  }
 }
 
 //This function sends a key of 8 zeros followed by a 1. This key indicates the start of the 7 bit ascii number
@@ -20,31 +36,6 @@ void writeKey(){
   }
   //Send a ONE
   digitalWrite(outPin,HIGH);
-  delay(delayTime);
-}
-
-//Sends Random Message
-void writeMessage(){
-  //Send a ONE
-  digitalWrite(outPin, HIGH);
-  delay(delayTime);
-  //Send a ZERO
-  digitalWrite(outPin, LOW);
-  delay(delayTime);
-  //Send a ONE
-  digitalWrite(outPin, HIGH);
-  delay(delayTime);
-  //Send a ZERO
-  digitalWrite(outPin, LOW);
-  delay(delayTime);
-  //Send a ONE
-  digitalWrite(outPin, HIGH);
-  delay(delayTime);
-  //Send a ZERO
-  digitalWrite(outPin, LOW);
-  delay(delayTime);
-  //Send a ONE
-  digitalWrite(outPin, HIGH);
   delay(delayTime);
 }
 
