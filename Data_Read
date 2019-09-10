@@ -1,47 +1,45 @@
+//Example Reciever Code
 int inPin = 7;    // pushbutton connected to digital pin 7
-int delayTime = 125;
+int delayTime = 125; //delay time must be the same as transmitter
 int val = 2;      // variable to store the read value
+char a[5]; //Array to store the message
 
 //Store the contents of the last 8 values
-int eightVals_Ago = 2;
-int sevenVals_Ago = 2;
-int sixVals_Ago = 2;
-int fiveVals_Ago = 2;
-int fourVals_Ago = 2;
-int threeVals_Ago = 2;
-int twoVals_Ago = 2;
-int oneVal_Ago = 2;
-int message = B00000000;
+int lastvals[8] = {2,2,2,2,2,2,2,2};
+int message = 0;
 
 void setup() {
   Serial.begin(9600);
   pinMode(inPin, INPUT);    // sets the digital pin 7 as input
   while(!digitalRead(inPin));
+  Serial.print("Message is ");
 }
 
+//Look for the key. Once the key is found decode the next 7 bits, and store them in "message". Store the message in a char array and then print out the message to the Serial Monitor
 void loop() {
-  //Keep Looking for the Key
-  val = digitalRead(inPin);   // read the input pin
-  Serial.print("Reading Value ");
-  Serial.println(val);  // sets the LED to the button's value
+  //Read the value from the input pin
+  val = digitalRead(inPin);
+  //Print the value just read
+  //Serial.print("Reading Value ");
+  //Serial.println(val);
   delay(delayTime);
   
-  if(eightVals_Ago == 0 && sevenVals_Ago == 0 && sixVals_Ago == 0 && fiveVals_Ago == 0 && fourVals_Ago == 0 && threeVals_Ago == 0 && twoVals_Ago == 0 && oneVal_Ago == 0 && val == 1){
-    Serial.println("Key Recieved");
-    Serial.print("Message is ");
-    for(int i=0;i<7;i++){
+  //Check if the key was found i.e. Last 8 values were zero and current value is 1 
+  if(lastvals[7] == 0 && lastvals[6] == 0 && lastvals[5] == 0 && lastvals[4] == 0 && lastvals[3] == 0 && lastvals[2] == 0 && lastvals[1] == 0 && lastvals[0] == 0 && val == 1){
+    //Serial.println("Key Recieved");
+    //Serial.print("Message is ");
+    for(int i=6;i>=0;i--){
       val = digitalRead(inPin);
       delay(delayTime);
       bitWrite(message,i,val);
     }
-    Serial.println(message);
+    a[0]= message;
+    Serial.print(a);
   }
-  eightVals_Ago = sevenVals_Ago;
-  sevenVals_Ago = sixVals_Ago;
-  sixVals_Ago = fiveVals_Ago;
-  fiveVals_Ago = fourVals_Ago;
-  fourVals_Ago = threeVals_Ago;
-  threeVals_Ago = twoVals_Ago;
-  twoVals_Ago = oneVal_Ago;
-  oneVal_Ago = val;
+  
+  //update the last 8 values that have been recieved
+  for(int j=6;j>=0;j--){
+    lastvals[j+1]=lastvals[j];
+  }
+  lastvals[0]=val;
 }
