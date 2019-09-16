@@ -14,4 +14,4 @@ Example Code for the data mission
 Load this code onto the arduino. When the switch is turned on and the arduino recieves power, the program will continuously print the message onto the copper pads
 
 ## Data Read:
-This is an example of how to read the message from the arduino. This code must be run on an arduino with pin 7 on the arduino touching the lower copper pad and a ground pin on the arduino connected to the upper copper pad.
+This is an example of how to read the message from the arduino. This code must be run on an arduino with pin 7 touching the lower copper pad and the ground pin touching the upper copper pad.
