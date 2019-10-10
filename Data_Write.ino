@@ -5,11 +5,15 @@
  * character in the message. 
  */
 int outPin = 7;   //sets the output pin to 7 (this pin should be connected to a copper pad)
+int pushButton = 13;    //sets the pin of the pushButton
 int delayTime = 125;     //send each bit 1/8 of a second after the last message
-char message[] = "LTF>UTF"; //Enter the message here to send to the copper pads
+char message = random(60,122); //Enter the message here to send to the copper pads
 
 void setup() {
   pinMode(outPin, OUTPUT);    // sets the output pin
+  pinMode(pushButton, INPUT_PULLUP);  //sets the pushbutton pin
+  Serial.begin(9600);
+  Serial.print(message);
 }
 
 /*
@@ -17,12 +21,11 @@ void setup() {
  * The message is converted to binary using the bitRead function and then written to the copper pads using digitalWrite.
  */
 void loop() {
-  //Loop through all the characters in the message
-  for(int j=0;j<sizeof(message)-1;j++){
+   do{
     writeKey();   //Inbetween each character in the message, write the 9 bit key
     //Loop through the 7 bits in the binary representation of the message character
     for(int i=6;i>=0;i--){
-      byte a = bitRead(message[j],i);  //Convert the ASCII character into binary and store the binary bit in variable a
+      byte a = bitRead(message,i);  //Convert the ASCII character into binary and store the binary bit in variable a
       if(a==1){
         digitalWrite(outPin, HIGH);    //Send a ONE
         delay(delayTime);
@@ -32,7 +35,9 @@ void loop() {
         delay(delayTime);
       }
     }
-  }
+    Serial.println(message);
+   } while(!digitalRead(pushButton)); //If the pushbutton is pressed, randomize the message
+   message = random(60,122); //reset the message that is being sent
 }
 
 /*
@@ -47,5 +52,6 @@ void writeKey(){
   digitalWrite(outPin,HIGH);       //Send a ONE
   delay(delayTime);
 }
+
 
 
