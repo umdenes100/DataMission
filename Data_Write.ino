@@ -36,7 +36,7 @@ void loop() {
       }
     }
     Serial.println(message);
-   } while(!digitalRead(pushButton)); //If the pushbutton is pressed, randomize the message
+   } while(digitalRead(pushButton)); //If the pushbutton is pressed, randomize the message
    message = random(60,122); //reset the message that is being sent
 }
 
