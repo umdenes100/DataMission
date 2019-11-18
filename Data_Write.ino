@@ -49,7 +49,7 @@ void loop() {
     }
    } while(digitalRead(pushButton)); //If the pushbutton is pressed, randomize the message
    randomSeed(analogRead(A0));
-   message = random(60,122); //reset the message that is being sent
+   message = random(65,90); //reset the message that is being sent
 }
 
 /*
